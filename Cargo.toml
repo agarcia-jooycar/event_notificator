@@ -1,0 +1,16 @@
+[package]
+name = "event_notificator"
+version = "0.1.0"
+authors = ["Adriel <agarcia@jooycar.cl>"]
+edition = "2018"
+
+[dependencies]
+serde = "1.0"
+serde_json = "1.0"
+serde_derive = "1.0"
+failure = "0.1.5"
+toml = "0.5"
+agni_client = { git = "ssh://github.com/jooycar/rust-agni.git" }
+#agni_client = { path = "../rust-agni" }
+trip_concrete = { git = "ssh://github.com/jooycar/trip_concrete.git" }
+#trip_concrete = { path = "../trip_concrete" }
