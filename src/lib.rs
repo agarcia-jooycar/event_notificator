@@ -13,3 +13,5 @@ pub mod notificator_config;
 pub mod notificator_builder;
 pub mod notifications;
 pub mod strategies;
+
+pub mod tests;
