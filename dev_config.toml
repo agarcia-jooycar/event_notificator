@@ -1,1 +1,1 @@
-strategy = { AgniNotificator = { agni_config = { base_url = "https://agni-api.jooycar.com", uid = "notificator" }, environments = { production-01 = "prod_trip_metrics_notification_topic", qa-01 = "dev_trip_metrics_notification_topic" }, topic = "prod_trip_metrics_notification_topic" }}
+strategy = { AgniNotificator = { agni_config = { base_url = "https://agni-api.jooycar.com", uid = "notificator" }, environments = { }, topic = "prod_trip_metrics_notification_topic" }}
