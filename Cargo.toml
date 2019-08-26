@@ -1,6 +1,6 @@
 [package]
 name = "event_notificator"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Adriel <agarcia@jooycar.cl>"]
 edition = "2018"
 
