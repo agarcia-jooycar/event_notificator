@@ -1,6 +1,6 @@
 [package]
 name = "event_notificator"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["Adriel <agarcia@jooycar.cl>"]
 edition = "2018"
 
@@ -14,5 +14,5 @@ agni_client = { git = "ssh://github.com/jooycar/rust-agni.git", tag = "0.2.0" }
 #agni_client = { path = "../rust-agni" }
 trip_concrete = { git = "ssh://github.com/jooycar/trip_concrete.git", tag = "0.4.0" }
 #trip_concrete = { path = "../trip_concrete" }
-metrics_tsdb = { git = "ssh://github.com/jooycar/metrics_tsdb.git", tag = "0.2.0" }
+metrics_tsdb = { git = "ssh://github.com/jooycar/metrics_tsdb.git", tag = "0.2.1" }
 #metrics_tsdb = { path = "../metrics_tsdb" }
