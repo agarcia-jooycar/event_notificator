@@ -1,2 +1,1 @@
-pub mod trip_notification;
-pub mod metric_notification;
+pub mod data_package_notification;

@@ -6,8 +6,7 @@ extern crate failure;
 extern crate toml;
 
 extern crate agni_client;
-extern crate metrics_tsdb;
-extern crate trip_concrete;
+extern crate data_package_v2;
 
 pub mod notificator_strategy;
 pub mod event_notificator;
