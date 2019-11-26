@@ -14,7 +14,7 @@ mod tests {
         let config = NotificatorStrategiesConfig::AgniNotificator {
             topic: "event_notificator_test".to_string(),
             environments: HashMap::new(),
-            agni_config: AgniClientConfig::default()
+            agni_config: AgniClientConfig::new("https://agni-telematic.jooycar.network".to_string(), "event_notificator".to_string())
         };
 
         let event_notificator = NotificatorBuilder::from_strategies_config(config);
