@@ -10,6 +10,7 @@ pub struct HeaderNotification {
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct BodyNotification {
+    #[serde(rename = "dataPackage")]
     pub data_package: DataPackageV2
 }
 
