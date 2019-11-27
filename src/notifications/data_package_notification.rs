@@ -3,7 +3,7 @@ use data_package_v2::data_package_v2::DataPackageV2;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct HeaderNotification {
-    pub create: u64,
+    pub created: u64,
     pub microservice: String,
     pub metadata: Value
 }

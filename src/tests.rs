@@ -23,7 +23,7 @@ mod tests {
         let data_package_v2 = serde_json::from_str::<DataPackageV2>(data_package_v2_str).unwrap();
 
         let header = HeaderNotification{
-            create: 12345678,
+            created: 12345678,
             metadata: Value::Null,
             microservice: "test_service".to_string()
         };
