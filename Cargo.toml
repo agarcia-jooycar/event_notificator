@@ -12,5 +12,5 @@ failure = "0.1.5"
 toml = "0.5"
 agni_client = { git = "ssh://github.com/jooycar/rust-agni.git", tag = "0.2.2" }
 #agni_client = { path = "../rust-agni" }
-data_package_v2 = { git = "ssh://github.com/jooycar/data_package_v2.git", tag = "0.1.1" }
+data_package_v2 = { git = "ssh://github.com/jooycar/data_package_v2.git", tag = "0.2.0" }
 #data_package_v2 = { path = "../data_package_v2" }
