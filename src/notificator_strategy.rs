@@ -1,14 +1,7 @@
-use trip_concrete::trip::Trip;
-
-use crate::notifications::metric_notification::DataMetricNotifications;
-use crate::notifications::trip_notification::TripNotification;
-
+use crate::notifications::data_package_notification::HeaderNotification;
+use data_package_v2::data_package_v2::DataPackageV2;
 use failure::Error;
 
 pub trait NotificatorStrategy: Send + Sync {
-    fn notify_metrics(&self, notifications: &DataMetricNotifications) -> Result<(), Error>;
-
-    fn notify_trip(&self, trip: &Trip) -> Result<(), Error>;
-
-    fn notify_trip_metadata(&self, trip_notification: &TripNotification) -> Result<(), Error>;
+    fn notify(&self, header: &HeaderNotification, data_package: &DataPackageV2) -> Result<(), Error>;
 }

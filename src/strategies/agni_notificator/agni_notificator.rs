@@ -1,7 +1,5 @@
-use trip_concrete::trip::Trip;
-
-use crate::notifications::metric_notification::DataMetricNotifications;
-use crate::notifications::trip_notification::TripNotification;
+use crate::notifications::data_package_notification::{ DataPackageNotification, HeaderNotification, BodyNotification };
+use data_package_v2::data_package_v2::DataPackageV2;
 
 use std::collections::HashMap;
 
@@ -30,50 +28,41 @@ impl AgniNotificator {
 }
 
 impl NotificatorStrategy for AgniNotificator {
-    fn notify_metrics(&self, notifications: &DataMetricNotifications) -> Result<(), Error>{
-        let notifications_str = serde_json::to_string(notifications).map_err(|e| {
-            failure::err_msg(format!("Error parsing Notification to String. Details: {}", e.to_string()))
-        })?;
+    fn notify(&self, header: &HeaderNotification, data_package: &DataPackageV2) -> Result<(), Error>{
+        let mut data_package_notification = DataPackageNotification{
+            header: header.clone(),
+            body: BodyNotification{
+                data_package: data_package.clone()
+            }
+        };
 
-        let mut topic = self.agni_client.topic(self.topic.clone());
+        if !data_package.tags.is_empty(){
+            for tag in &data_package.tags {
+                data_package_notification.body.data_package.tags = vec![tag.clone()];
 
-        topic.publish(notifications_str.clone()).map_err(|e| {
-            failure::err_msg(format!("Error publishing Notification {:?}. Details: {}", notifications_str, e.to_string()))
-        })?;
+                let notifications_str = serde_json::to_string(&data_package_notification).map_err(|e| {
+                    failure::err_msg(format!("Error parsing Notification to String. Details: {}", e.to_string()))
+                })?;
 
-        Ok(())
-    }
+                if let Some(topic_name) = self.environments.get(&tag.environment){
+                    let mut topic = self.agni_client.topic(topic_name.clone());
 
-    fn notify_trip(&self, trip: &Trip) -> Result<(), Error>{
-        for tag in &trip.tags {
-            let mut new_trip = trip.clone();
-            new_trip.tags = vec![tag.clone()];
-            let notifications_str = serde_json::to_string(&new_trip).map_err(|e| {
+                    topic.publish(notifications_str.clone()).map_err(|e| {
+                        failure::err_msg(format!("Error publishing Notification {:?}. Details: {}", notifications_str, e.to_string()))
+                    })?;
+                }
+            }
+        }else{
+            let notifications_str = serde_json::to_string(&data_package_notification).map_err(|e| {
                 failure::err_msg(format!("Error parsing Notification to String. Details: {}", e.to_string()))
             })?;
 
-            if let Some(topic_name) = self.environments.get(&tag.name){
-                let mut topic = self.agni_client.topic(topic_name.clone());
+            let mut topic = self.agni_client.topic(self.topic.clone());
 
-                topic.publish(notifications_str.clone()).map_err(|e| {
-                    failure::err_msg(format!("Error publishing Notification {:?}. Details: {}", notifications_str, e.to_string()))
-                })?;
-            }
+            topic.publish(notifications_str.clone()).map_err(|e| {
+                failure::err_msg(format!("Error publishing Notification {:?}. Details: {}", notifications_str, e.to_string()))
+            })?;
         }
-
-        Ok(())
-    }
-
-    fn notify_trip_metadata(&self, trip_notification: &TripNotification) -> Result<(), Error>{
-        let notifications_str = serde_json::to_string(trip_notification).map_err(|e| {
-            failure::err_msg(format!("Error parsing Notification to String. Details: {}", e.to_string()))
-        })?;
-
-        let mut topic = self.agni_client.topic(self.topic.clone());
-
-        topic.publish(notifications_str.clone()).map_err(|e| {
-            failure::err_msg(format!("Error publishing Notification {:?}. Details: {}", notifications_str, e.to_string()))
-        })?;
 
         Ok(())
     }
