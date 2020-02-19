@@ -8,12 +8,14 @@ edition = "2018"
 serde = "1.0"
 serde_json = "1.0"
 serde_derive = "1.0"
-failure = "0.1.5"
-toml = "0.5"
-agni_client = { git = "ssh://github.com/jooycar/rust-agni.git", tag = "0.2.2" }
-#agni_client = { path = "../rust-agni" }
+failure = "0.1.6"
+futures = "0.3.4"
+tokio = { version = "0.2", features = ["macros"] }
+async-trait = "0.1.24"
+#agni_client = { git = "ssh://github.com/jooycar/rust-agni.git", tag = "1.0.0" }
+agni_client = { path = "../rust-agni" }
 data_package_v2 = { git = "ssh://github.com/jooycar/data_package_v2.git", tag = "0.3.0" }
 #data_package_v2 = { path = "../data_package_v2" }
 
 [dev-dependencies]
-mockito = "0.22.0"
+mockito = "0.23.2"

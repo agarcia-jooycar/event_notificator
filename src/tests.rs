@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use mockito::{ mock };
+    use mockito::mock;
 
     use crate::notificator_config::NotificatorStrategiesConfig;
     use crate::notificator_builder::NotificatorBuilder;
@@ -10,6 +10,8 @@ mod tests {
     use data_package_v2::data_package_v2::DataPackageV2;
     use serde_json::Value;
     use crate::event_notificator::EventNotificator;
+
+    use tokio::runtime::Runtime;
 
     const INBOX: &str = "event_notificator_test";
 
@@ -46,7 +48,7 @@ mod tests {
         };
 
         // Test
-        let response = event_notificator.notify(&header, &data_package_v2).unwrap();
+        let response = Runtime::new().unwrap().block_on(event_notificator.notify(&header, &data_package_v2)).unwrap();
 
         assert_eq!((), response)
     }
