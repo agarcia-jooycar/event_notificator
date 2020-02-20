@@ -8,7 +8,7 @@ Put this in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-event_notificator = { git = "ssh://github.com/jooycar/event_notificator.git", tag = "0.1.0" }
+event_notificator = { git = "ssh://github.com/jooycar/event_notificator.git", tag = "2.0.0" }
 tokio = { version = "0.2", features = ["full"] }
 ```
 
