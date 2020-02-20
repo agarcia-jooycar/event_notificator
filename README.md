@@ -17,6 +17,9 @@ Then you can use it as follows. Create a `main.rs` and type:
 extern crate data_package_v2;
 extern crate event_notificator;
 extern crate agni_client;
+extern crate tokio;
+
+use tokio::prelude::*;
 
 use data_package_v2::data_package_v2::DataPackageV2;
 use agni_client::client::AgniClientConfig;
@@ -42,6 +45,9 @@ pub fn main(){
         microservice: "test_service".to_string()
     };
 
-    let result = event_notificator.notify(&header, &data_package_v2).unwrap();
+    let result = event_notificator
+                    .notify(&header, &data_package_v2)
+                    .await
+                    .unwrap();
 }
 ```
