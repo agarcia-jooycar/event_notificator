@@ -1,3 +1,3 @@
-pub mod agni_notificator;
+pub mod notificator;
 
-pub use agni_notificator::AgniNotificator;
+pub use notificator::Notificator;

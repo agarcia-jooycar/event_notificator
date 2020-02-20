@@ -13,13 +13,13 @@ use std::sync::Arc;
 use async_trait::async_trait;
 
 #[derive(Debug)]
-pub struct AgniNotificator {
+pub struct Notificator {
     topic_client: AgniTopic,
     environments_topics: HashMap<String, AgniTopic>
 }
 
-impl AgniNotificator {
-    pub fn new(agni_config: AgniClientConfig, environments: HashMap<String, String>, topic: String) -> AgniNotificator {
+impl Notificator {
+    pub fn new(agni_config: AgniClientConfig, environments: HashMap<String, String>, topic: String) -> Notificator {
         let agni_client = Arc::new(AgniClient::new(&agni_config));
         let topic_client = AgniTopic::new(agni_client.clone(), topic);
         let environments_topics = environments
@@ -28,7 +28,7 @@ impl AgniNotificator {
                 (k.clone(), AgniTopic::new(agni_client.clone(), t.clone()))
         }).collect::<HashMap<String, AgniTopic>>();
 
-        AgniNotificator {
+        Notificator {
             topic_client,
             environments_topics
         }
@@ -36,7 +36,7 @@ impl AgniNotificator {
 }
 
 #[async_trait]
-impl NotificatorStrategy for AgniNotificator {
+impl NotificatorStrategy for Notificator {
     async fn notify(&self, header: &HeaderNotification, data_package: &DataPackageV2) -> Result<(), Error>{
         let mut data_package_notification = DataPackageNotification{
             header: header.clone(),
