@@ -9,6 +9,7 @@ Put this in your `Cargo.toml`:
 ```toml
 [dependencies]
 event_notificator = { git = "ssh://github.com/jooycar/event_notificator.git", tag = "0.1.0" }
+tokio = { version = "0.2", features = ["full"] }
 ```
 
 Then you can use it as follows. Create a `main.rs` and type:
