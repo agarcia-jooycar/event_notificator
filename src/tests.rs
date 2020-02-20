@@ -19,7 +19,7 @@ mod tests {
         let config = NotificatorStrategiesConfig::AgniNotificator {
             topic: INBOX.to_string(),
             environments: [("production-01".to_string(), INBOX.to_string())].iter().cloned().collect(),
-            agni_config: AgniClientConfig::new(agni, "event_notificator".to_string())
+            agni_config: AgniClientConfig::new(agni, "event_notificator".to_string(), 0)
         };
 
         NotificatorBuilder::from_strategies_config(config)
