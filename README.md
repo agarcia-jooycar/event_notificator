@@ -27,6 +27,7 @@ use event_notificator::notificator_config::NotificatorStrategiesConfig;
 use event_notificator::notificator_builder::NotificatorBuilder;
 use event_notificator::notifications::data_package_notification::HeaderNotification;
 
+#[tokio::main]
 pub fn main(){
     let config = NotificatorStrategiesConfig::AgniNotificator {
         topic: "event_notificator_test".to_string(),
