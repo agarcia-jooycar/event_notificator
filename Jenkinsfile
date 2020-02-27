@@ -24,14 +24,14 @@ pipeline {
                 sh "cargo clippy"
             }
         }
-        /*stage('Rustfmt') {
+        stage('Rustfmt') {
             steps {
                 // The build will fail if rustfmt thinks any changes are
                 // required.
                 sh "rustup component add rustfmt"
                 sh "cargo fmt -- --check"
             }
-        }*/
+        }
         stage('Doc') {
             steps {
                 sh "cargo doc --no-deps"
