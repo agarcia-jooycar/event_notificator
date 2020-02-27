@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use mockito::{ mock };
+    use mockito::mock;
 
     use crate::notificator_config::NotificatorStrategiesConfig;
     use crate::notificator_builder::NotificatorBuilder;
@@ -11,13 +11,15 @@ mod tests {
     use serde_json::Value;
     use crate::event_notificator::EventNotificator;
 
+    use tokio::runtime::Runtime;
+
     const INBOX: &str = "event_notificator_test";
 
     fn init_notificator(agni: String) -> EventNotificator{
         let config = NotificatorStrategiesConfig::AgniNotificator {
             topic: INBOX.to_string(),
             environments: [("production-01".to_string(), INBOX.to_string())].iter().cloned().collect(),
-            agni_config: AgniClientConfig::new(agni, "event_notificator".to_string())
+            agni_config: AgniClientConfig::new(agni, "event_notificator".to_string(), 0)
         };
 
         NotificatorBuilder::from_strategies_config(config)
@@ -46,7 +48,7 @@ mod tests {
         };
 
         // Test
-        let response = event_notificator.notify(&header, &data_package_v2).unwrap();
+        let response = Runtime::new().unwrap().block_on(event_notificator.notify(&header, &data_package_v2)).unwrap();
 
         assert_eq!((), response)
     }

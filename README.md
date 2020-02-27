@@ -8,7 +8,8 @@ Put this in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-event_notificator = { git = "ssh://github.com/jooycar/event_notificator.git", tag = "0.1.0" }
+event_notificator = { git = "ssh://github.com/jooycar/event_notificator.git", tag = "2.0.0" }
+tokio = { version = "0.2", features = ["full"] }
 ```
 
 Then you can use it as follows. Create a `main.rs` and type:
@@ -17,6 +18,9 @@ Then you can use it as follows. Create a `main.rs` and type:
 extern crate data_package_v2;
 extern crate event_notificator;
 extern crate agni_client;
+extern crate tokio;
+
+use tokio::prelude::*;
 
 use data_package_v2::data_package_v2::DataPackageV2;
 use agni_client::client::AgniClientConfig;
@@ -24,6 +28,7 @@ use event_notificator::notificator_config::NotificatorStrategiesConfig;
 use event_notificator::notificator_builder::NotificatorBuilder;
 use event_notificator::notifications::data_package_notification::HeaderNotification;
 
+#[tokio::main]
 pub fn main(){
     let config = NotificatorStrategiesConfig::AgniNotificator {
         topic: "event_notificator_test".to_string(),
@@ -42,6 +47,9 @@ pub fn main(){
         microservice: "test_service".to_string()
     };
 
-    let result = event_notificator.notify(&header, &data_package_v2).unwrap();
+    let result = event_notificator
+                    .notify(&header, &data_package_v2)
+                    .await
+                    .unwrap();
 }
 ```

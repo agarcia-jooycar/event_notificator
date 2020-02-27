@@ -11,7 +11,7 @@ pub struct EventNotificator{
 }
 
 impl EventNotificator{
-    pub fn notify(&self, header: &HeaderNotification, data_package: &DataPackageV2) -> Result<(), Error>{
-        self.notificator_strategy.notify(header, data_package)
+    pub async fn notify(&self, header: &HeaderNotification, data_package: &DataPackageV2) -> Result<(), Error>{
+        self.notificator_strategy.notify(header, data_package).await
     }
 }

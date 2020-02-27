@@ -1,1 +1,0 @@
-strategy = { AgniNotificator = { agni_config = { base_url = "https://agni-api.jooycar.com", uid = "notificator" }, environments = { }, topic = "prod_trip_metrics_notification_topic" }}
