@@ -2,13 +2,26 @@ EVENT NOTIFICATOR
 
 Define the strategy to write messages to the Messaging System.
 
+## Coverage
+
+Create coverage html report executing:
+```
+docker build --build-arg token=github_user_token -f CovDockerfile -t event_notificator_cov . 
+docker run -v path_to_coverage_folder:/coverage --security-opt seccomp=unconfined event_notificator_cov 
+```
+
+Find coverage report in: 
+```
+path_to_coverage_folder/tarpaulin-report.html
+```
+
 ## Usage
 
 Put this in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-event_notificator = { git = "ssh://github.com/jooycar/event_notificator.git", tag = "2.0.0" }
+event_notificator = { git = "ssh://github.com/jooycar/event_notificator.git", tag = "3.0.0" }
 tokio = { version = "0.2", features = ["full"] }
 ```
 
