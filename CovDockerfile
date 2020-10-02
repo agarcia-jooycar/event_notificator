@@ -1,0 +1,17 @@
+FROM rust:latest
+
+WORKDIR /usr/src/project
+
+COPY src src
+COPY tests tests
+COPY Cargo.toml .
+
+ARG token
+ENV token=${token}
+
+RUN git config --global url."https://${token}:@github.com/".insteadOf "ssh://github.com/"
+RUN git config --global user.name "username"
+
+RUN cargo install cargo-tarpaulin
+
+CMD cargo tarpaulin -v --workspace -o Html --output-dir /coverage

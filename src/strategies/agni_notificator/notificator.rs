@@ -5,7 +5,7 @@ use data_package_v2::data_package_v2::DataPackageV2;
 
 use std::collections::HashMap;
 
-use failure::Error;
+use crate::errors::NotificationError;
 
 use crate::notificator_strategy::NotificatorStrategy;
 use agni_client::client::{AgniClient, AgniClientConfig};
@@ -38,6 +38,24 @@ impl Notificator {
             environments_topics,
         }
     }
+
+    async fn notify_msg(&self, data_package_notification: &DataPackageNotification, topic: &AgniTopic) -> Result<(), NotificationError>{
+        let notifications_str =
+            serde_json::to_string(&data_package_notification).map_err(|e| {
+                NotificationError::MessageError {
+                    details: e.to_string(),
+                }
+            })?;
+
+        topic
+            .publish(notifications_str.clone())
+            .await
+            .map_err(|e| NotificationError::ApiError {
+                details: e.to_string(),
+            })?;
+
+        Ok(())
+    }
 }
 
 #[async_trait]
@@ -46,7 +64,7 @@ impl NotificatorStrategy for Notificator {
         &self,
         header: &HeaderNotification,
         data_package: &DataPackageV2,
-    ) -> Result<(), Error> {
+    ) -> Result<(), NotificationError> {
         let mut data_package_notification = DataPackageNotification {
             header: header.clone(),
             body: BodyNotification {
@@ -58,46 +76,12 @@ impl NotificatorStrategy for Notificator {
             for tag in &data_package.tags {
                 data_package_notification.body.data_package.tags = vec![tag.clone()];
 
-                let notifications_str =
-                    serde_json::to_string(&data_package_notification).map_err(|e| {
-                        failure::err_msg(format!(
-                            "Error parsing Notification to String. Details: {}",
-                            e.to_string()
-                        ))
-                    })?;
-
                 if let Some(topic_client) = self.environments_topics.get(&tag.environment) {
-                    topic_client
-                        .publish(notifications_str.clone())
-                        .await
-                        .map_err(|e| {
-                            failure::err_msg(format!(
-                                "Error publishing Notification {:?}. Details: {}",
-                                notifications_str,
-                                e.to_string()
-                            ))
-                        })?;
+                    self.notify_msg(&data_package_notification, topic_client).await?;
                 }
             }
         } else {
-            let notifications_str =
-                serde_json::to_string(&data_package_notification).map_err(|e| {
-                    failure::err_msg(format!(
-                        "Error parsing Notification to String. Details: {}",
-                        e.to_string()
-                    ))
-                })?;
-
-            self.topic_client
-                .publish(notifications_str.clone())
-                .await
-                .map_err(|e| {
-                    failure::err_msg(format!(
-                        "Error publishing Notification {:?}. Details: {}",
-                        notifications_str,
-                        e.to_string()
-                    ))
-                })?;
+            self.notify_msg(&data_package_notification, &self.topic_client).await?;
         }
 
         Ok(())
